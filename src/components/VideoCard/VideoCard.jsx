@@ -34,13 +34,17 @@ function VideoCard({displayData,setDeleteResponse}) {
       console.log(error); 
     }
   }
+const dargStarted = (e,videoId)=>{
+console.log(`Dragging Started With Video ID: ${videoId}`);
+e.dataTransfer.setData("videoId",videoId)
 
+}
 
 
 
   return (
-    <div>
-      <Card>
+    <>
+      <Card draggable={true} onDragStart={e=>dargStarted(e,displayData?.id)}>
         <Card.Img
           onClick={handleShow}
           style={{ height: "200px", cursor: "pointer" }}
@@ -57,7 +61,7 @@ function VideoCard({displayData,setDeleteResponse}) {
         </Card.Body>
       </Card>
 
-      <Modal size="xl" show={show} onHide={handleClose}>
+      <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{displayData?.caption}</Modal.Title>
         </Modal.Header>
@@ -70,7 +74,7 @@ function VideoCard({displayData,setDeleteResponse}) {
 
         </Modal.Body>
       </Modal>
-    </div>
+    </>
   );
 }
 

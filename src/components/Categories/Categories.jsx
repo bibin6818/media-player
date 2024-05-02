@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import { Modal, Button, Form, FloatingLabel } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addCategoryAPI, getCategoryAPI, removeCategoryAPI } from '../../services/allAPI';
+import { addCategoryAPI, getAVIdeoAPI, getCategoryAPI, removeCategoryAPI, updateCategoryAPI } from '../../services/allAPI';
+import VideoCard from '../VideoCard/VideoCard';
+
+
 
 function Categories() {
   const [allCategories, setAllCategories] =
@@ -44,11 +47,33 @@ function Categories() {
 
   }
 
-  const handleRemoveCategory = async(categoryId)=>{
-    try{
+  const handleRemoveCategory = async (categoryId) => {
+    try {
       await removeCategoryAPI(categoryId)
       getAllCategory()
-    }catch(err){
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const dragOverCategory = (e) => {
+    e.preventDefault()
+    console.log("Dragging over Category");
+
+  }
+
+  const videoDropped = async (e, categoryId) => {
+    const videoId = e.dataTransfer.getData("videoId")
+    console.log(`Video id: ${videoId} Dropped in Category id: ${categoryId}`);
+    try {
+      const { data } = await getAVIdeoAPI(videoId)
+      console.log(data);
+      let selectedCategory = allCategories?.find(item => item.id == categoryId)
+      selectedCategory.allVideos.push(data)
+      console.log(selectedCategory);
+      await updateCategoryAPI(categoryId, selectedCategory)
+      getAllCategory()
+    } catch (err) {
       console.log(err);
     }
   }
@@ -65,11 +90,28 @@ function Categories() {
         {
           allCategories.length > 0 ?
             allCategories?.map(item => (
-              <div key={item?.id} className="border rounded p-3 mb-2">
+              <div droppable={true} onDragOver={e => dragOverCategory(e)} onDrop={e => videoDropped(e, item?.id)} key={item?.id} className="border rounded p-3 mb-2">
                 <div className="d-flex justify-content-between">
                   <h5>{item?.categoryName}</h5>
-                  <button onClick={()=>handleRemoveCategory(item?.id)} className='btn'> <i className='fa-solid fa-trash text-danger'></i> </button>
+                  <button onClick={() => handleRemoveCategory(item?.id)} className='btn'> <i className='fa-solid fa-trash text-danger'></i> </button>
                 </div>
+
+                <div className='row mt-2'>
+
+                  {
+                    item.allVideos?.length > 0 &&
+                    item.allVideos?.map(video => (
+                      <div key={video?.id} className='col-lg-6'>
+                        <VideoCard displayData={video} />
+                      </div>
+
+                    ))
+
+
+
+                  }
+                </div>
+
               </div>
             ))
             :
