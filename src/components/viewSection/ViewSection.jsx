@@ -6,7 +6,7 @@ import { addVideoAPI, getSingleCategoryAPI, getVideoAPI,updateCategoryAPI} from 
 
 
 
-function ViewSection({addVideoResponse,removeCategoryVideoResponse}) {
+function ViewSection({setDeleteVideoCategoryResponse,addVideoResponse,removeCategoryVideoResponse}) {
   const [deleteResponse,setDeleteResponse] = useState("")
 
   const [allVideo, SetAllVideo] = useState([])
@@ -39,7 +39,7 @@ const handleCategoryVideo = async (e)=>{
     console.log(updatedCategoryVideoList);
     const {categoryName,id} = data
     const categoryResult = await updateCategoryAPI(categoryId,{id,categoryName,allVideos:updatedCategoryVideoList})
-
+    setDeleteVideoCategoryResponse(categoryResult.data)
     await addVideoAPI(videoDetails)
     getAllVideo()
   }catch(err){

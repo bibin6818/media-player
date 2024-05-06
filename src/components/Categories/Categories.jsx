@@ -7,7 +7,7 @@ import VideoCard from '../VideoCard/VideoCard';
 
 
 
-function Categories({setRemoveCategoryVideoResponse}) {
+function Categories({setRemoveCategoryVideoResponse,deleteVideoCategoryResponse}) {
   const [allCategories, setAllCategories] =
     useState([])
   const [categoryName, setCategoryName] = useState("")
@@ -19,7 +19,7 @@ function Categories({setRemoveCategoryVideoResponse}) {
 
   useEffect(() => {
     getAllCategory()
-  }, [])
+  }, [deleteVideoCategoryResponse])
 
   const getAllCategory = async () => {
     try {
