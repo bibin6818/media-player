@@ -4,12 +4,12 @@ import SERVER_URL from "./server_url";
 
 
 //add video called by add
-export const addVIdeoAPI = async (video)=>{ //only export  bcz in this function multiple thing need to happen
+export const addVideoAPI = async (video)=>{ //only export  bcz in this function multiple thing need to happen
     return await commonAPI("POST",`${SERVER_URL}/allVideos`,video)
 }
 
 // to get the video from the json file
-export const getVIdeoAPI = async ()=>{ 
+export const getVideoAPI = async ()=>{ 
     return await commonAPI("GET",`${SERVER_URL}/allVideos`,"")
 }
 
@@ -63,4 +63,10 @@ export const getAVIdeoAPI = async (videoId)=>{
   export const updateCategoryAPI = async (categoryId,categoryDetails)=>{
     return await commonAPI("PUT",`${SERVER_URL}/allCategory/${categoryId}`,categoryDetails)
  }
- 
+    
+
+   //get a  category called by category componnet
+   export const getSingleCategoryAPI = async (categoryId)=>{
+    return await commonAPI("GET",`${SERVER_URL}/allCategory/${categoryId}`,"")
+ }
+    

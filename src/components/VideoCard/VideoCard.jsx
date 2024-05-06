@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
 import { removeVideoAPI, saveHistoryAPI } from "../../services/allAPI";
 
-function VideoCard({displayData,setDeleteResponse}) {
+function VideoCard({displayData,setDeleteResponse,insideCategory}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -54,9 +54,9 @@ e.dataTransfer.setData("videoId",videoId)
         <Card.Body className="text-center w-100">
           <Card.Title className="d-flex justify-content-between align-items-center">
             <p>{displayData?.caption}</p>
-            <button onClick={()=>handleRemoveVideo(displayData?.id)} className="btn">
+           { !insideCategory && <button onClick={()=>handleRemoveVideo(displayData?.id)} className="btn">
               <i className="fa-solid fa-trash text-danger"></i>
-            </button>
+            </button>}
           </Card.Title>
         </Card.Body>
       </Card>

@@ -6,10 +6,7 @@ import Categories from '../components/Categories/Categories'
 
 function Home() {
   const [addVideoResponse,setaddVideoResponse] = useState("")
-
-
-
-
+  const [removeCategoryVideoResponse,setRemoveCategoryVideoResponse] = useState("")
 
   return (
     <>
@@ -20,20 +17,12 @@ function Home() {
     <div className="container-fluid my-5 row">
     <div className="col-lg-6">
       <h3>All videos</h3>
-      <ViewSection addVideoResponse = {addVideoResponse}/>
+      <ViewSection addVideoResponse = {addVideoResponse} removeCategoryVideoResponse={removeCategoryVideoResponse}/>
     </div>
     <div className="col-lg-6">
-    <Categories/>
+    <Categories setRemoveCategoryVideoResponse={setRemoveCategoryVideoResponse}/>
     </div>
-
-
-
     </div>
-    
-    
-    
-    
-    
     
     </>
   )

@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 import { Modal, Button, Form, FloatingLabel } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addCategoryAPI, getAVIdeoAPI, getCategoryAPI, removeCategoryAPI, updateCategoryAPI } from '../../services/allAPI';
+import { addCategoryAPI, getAVIdeoAPI, getCategoryAPI, removeCategoryAPI, removeVideoAPI, updateCategoryAPI } from '../../services/allAPI';
 import VideoCard from '../VideoCard/VideoCard';
 
 
 
-function Categories() {
+function Categories({setRemoveCategoryVideoResponse}) {
   const [allCategories, setAllCategories] =
     useState([])
   const [categoryName, setCategoryName] = useState("")
@@ -36,6 +36,7 @@ function Categories() {
       //api call
       try {
         await addCategoryAPI({ categoryName, allVideos: [] })
+        setCategoryName("")
         handleClose()
         getAllCategory()
       } catch (err) {
@@ -72,10 +73,19 @@ function Categories() {
       selectedCategory.allVideos.push(data)
       console.log(selectedCategory);
       await updateCategoryAPI(categoryId, selectedCategory)
+      const result = await removeVideoAPI(videoId)
+      setRemoveCategoryVideoResponse(result)
       getAllCategory()
     } catch (err) {
       console.log(err);
     }
+  }
+  const videoDargStarted = (e,videoDetails,categoryId)=>{
+    console.log(videoDetails,categoryId);
+    console.log("video drag started from category");
+    let dataShare = {categoryId,videoDetails}
+    e.dataTransfer.setData("dataShare",JSON.stringify(dataShare))
+
   }
 
   return (
@@ -101,8 +111,8 @@ function Categories() {
                   {
                     item.allVideos?.length > 0 &&
                     item.allVideos?.map(video => (
-                      <div key={video?.id} className='col-lg-6'>
-                        <VideoCard displayData={video} />
+                      <div draggable={true} onDragStart={e=>videoDargStarted(e,video,item.id)} key={video?.id} className='col-lg-6'>
+                        <VideoCard displayData={video} insideCategory={true} />
                       </div>
 
                     ))

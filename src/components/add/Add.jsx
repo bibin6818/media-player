@@ -6,7 +6,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addVIdeoAPI } from '../../services/allAPI';
+import { addVideoAPI } from '../../services/allAPI';
 
 
 
@@ -24,7 +24,7 @@ if(caption&&imgURL&&youtubeURL){
   console.log("api call");
 
   try {
-   const result = await addVIdeoAPI(videoDetails)
+   const result = await addVideoAPI(videoDetails)
    console.log(result);
     if( result.status >=200 && result.status<300){
       console.log(result.data);
